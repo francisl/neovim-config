@@ -17,7 +17,7 @@ keymap.set("n", "<C-a>", "ggVG")
 
 -- Split screen
 keymap.set("n", "<leader>sv", "<C-w>v") -- split vert
-keymap.set("n", "<leader>sh", "<C-w>s") -- split hori
+keymap.set("n", "<leader>sn", "<C-w>s") -- split hori
 keymap.set("n", "<leader>se", "<C-w>=") -- make split windows equal width
 keymap.set("n", "<leader>sx", ":close<CR>") -- close split window
 keymap.set("n", "<leader>sh", "<C-w>h")
@@ -40,8 +40,9 @@ keymap.set("n", "<leader>tp", ":tabp<CR>") --  go to previous tab
 keymap.set("n", "<leader>sm", ":MaximizerToggle<CR>")
 
 -- nvim-tree
-keymap.set("n", "<leader>bt", ":NvimTreeToggle<CR>")
+keymap.set("n", "<leader>bt", ":NvimTreeFindFileToggle<CR>")
 keymap.set("n", "<leader>bf", ":NvimTreeFocus<CR>")
+keymap.set("n", "<leader>bb", ":NvimTreeFindFile<CR>")
 
 -- telescope
 

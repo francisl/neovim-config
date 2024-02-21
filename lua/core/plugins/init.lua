@@ -43,7 +43,16 @@ local plugins = {
 
   {
     'nvim-telescope/telescope-fzf-native.nvim',
-    build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
+    build =
+    'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
+  },
+  {
+    "nvim-telescope/telescope-live-grep-args.nvim"
+  },
+  {
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.2',
+    dependencies = { { 'nvim-lua/plenary.nvim' } }
   },
 
   -- completion
@@ -57,17 +66,12 @@ local plugins = {
   "neovim/nvim-lspconfig",
   "williamboman/mason-lspconfig.nvim",
   "glepnir/lspsaga.nvim",
-  {
-	  'nvim-telescope/telescope.nvim',
-	  tag = '0.1.2',
-	  dependencies = { {'nvim-lua/plenary.nvim'} }
-  },
-  'mbbill/undotree',
+    'mbbill/undotree',
   'ThePrimeagen/harpoon',
   'tpope/vim-fugitive',
   {
     "ray-x/go.nvim",
-    dependencies = {  -- optional packages
+    dependencies = { -- optional packages
       "ray-x/guihua.lua",
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
@@ -75,10 +79,11 @@ local plugins = {
     config = function()
       require("go").setup()
     end,
-    event = {"CmdlineEnter"},
-    ft = {"go", 'gomod'},
+    event = { "CmdlineEnter" },
+    ft = { "go", 'gomod' },
     build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
-  }
+  },
+  'mfussenegger/nvim-lint'
 }
 
 local opts = {}
@@ -95,5 +100,5 @@ require("core/plugins/nvim-tree")
 require("core/plugins/treesitter")
 require("core/plugins/harpoon")
 require("core/plugins/fugitive")
+require("core/plugins/copilot")
 require('go').setup()
-

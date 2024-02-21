@@ -13,7 +13,12 @@ telescope.setup({
         ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist, -- send selected to quickfixlist
       },
     },
-    file_ignore_patterns = { "node_modules/", "build/", "coverage/"}
+    -- imgrep_arguments = {
+    --  '--line-number',
+    --  '--column',
+    --  '-uu'
+    -- ,
+    file_ignore_patterns = { ".git/", "package-lock.json", "node_modules/", "build/", "coverage/", "dist/"}
   },
   extensions = {
     fzf = {
@@ -40,9 +45,18 @@ telescope.setup({
       -- the cwd will be the entry node for the file browser
       -- cwd = "~/.config/nvim",
     },
+    live_grep_args = {
+      auto_quoting = true,
+      noremap = true
+    },
+--    grep_string = {
+--      search = vim.fn.input("Grep > ")
+--    }
   },
 })
 
 telescope.load_extension("fzf")
 telescope.load_extension("file_browser")
-
+-- telescope.load_extension("live_grep_args")
+-- telescope.load_extension("grep_string")
+-- telescope.builtin.grep_string({ search = vim.fn.input("Grep > ")})

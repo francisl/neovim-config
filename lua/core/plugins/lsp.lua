@@ -16,7 +16,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protoc
 -- vim.keymap.set('n', 'K', '<Cmd>Lspsaga hover_doc<cr>', { silent = true })
 -- vim.keymap.set({"n","v"}, "<leader>ca", "<cmd>Lspsaga code_action<CR>", { silent = true })
 -- vim.keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", { silent = true })
--- 
+--
 local nvim_lsp = require("lspconfig")
 
 nvim_lsp.lua_ls.setup {
@@ -36,8 +36,7 @@ nvim_lsp.lua_ls.setup {
   }
 }
 
-
--- Ocaml 
+-- Ocaml
 --
 --
 --local on_attach = function(client, bufnr)
@@ -50,12 +49,12 @@ nvim_lsp.lua_ls.setup {
 --  end
 --end
 
-nvim_lsp.ocamllsp.setup{}
+nvim_lsp.ocamllsp.setup {}
 
 
 -- Go lang
 --
-require('go').setup{
+require('go').setup {
   lsp_cfg = false
 }
 local cfg = require('go.lsp').config() -- config() return the go.nvim gopls setup
@@ -73,37 +72,39 @@ nvim_lsp.nimls.setup {
   cmd = { "nimlsp" }
 }
 
+nvim_lsp.eslint.setup {}
+
 vim.api.nvim_create_autocmd('LspAttach', {
   desc = 'LSP actions',
   callback = function()
     local bufmap = function(mode, lhs, rhs)
-      local opts = {buffer = true}
+      local opts = { buffer = true }
       vim.keymap.set(mode, lhs, rhs, opts)
     end
 
     -- Displays hover information about the symbol under the cursor
     bufmap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
 
-    -- Jump to the definition
-    bufmap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
+    bufmap('n', 'gdd', '<cmd>lua vim.lsp.buf.definition()<cr>')
+    bufmap('n', 'gds', '<cmd>lua vim.lsp.buf.definition({jump_type="vsplit"})<cr>')
 
-    -- Jump to declaration
-    bufmap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
+    bufmap('n', 'gDD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
+    bufmap('n', 'gDs', '<cmd>lua vim.lsp.buf.declaration({jump_type="vsplit"})<cr>')
 
     -- Use formater
     bufmap("n", "gf", '<cmd>lua vim.lsp.buf.formatting<cr>')
 
     -- Lists all the implementations for the symbol under the cursor
-    bufmap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>')
+    bufmap('n', 'gu', '<cmd>lua vim.lsp.buf.implementation()<cr>')
 
     -- Jumps to the definition of the type symbol
     bufmap('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>')
 
-    -- Lists all the references 
+    -- Lists all the references
     bufmap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>')
 
     -- Displays a function's signature information
-    -- bufmap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
+    bufmap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
 
     -- Renames all references to the symbol under the cursor
     bufmap('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>')
@@ -120,7 +121,37 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     -- Move to the next diagnostic
     bufmap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>')
+
+    bufmap('n', '<space>f', '<cmd>lua vim.lsp.buf.format({ async = true })<cr>')
   end
+})
+
+-- vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+--   callback = function()
+--     require("lint").try_lint()
+--   end,
+-- })
+
+local lspconfig = require("lspconfig")
+
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
+
+local servers = { 'gopls', 'ccls', 'cmake', 'tsserver', 'templ' }
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup({
+    on_attach = on_attach,
+    capabilities = capabilities,
+  })
+end
+vim.filetype.add({ extension = { templ = "templ" } })
+
+
+
+lspconfig.html.setup({
+    on_attach = on_attach,
+    capabilities = capabilities,
+    filetypes = { "html", "templ" },
 })
 
 

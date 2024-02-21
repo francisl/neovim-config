@@ -35,7 +35,6 @@ keymap.set("n", "<leader>tp", ":tabp<CR>") --  go to previous tab
 
 
 -- plugins
---
 -- vim-maximizer
 keymap.set("n", "<leader>sm", ":MaximizerToggle<CR>")
 
@@ -46,7 +45,7 @@ keymap.set("n", "<leader>bb", ":NvimTreeFindFile<CR>")
 
 -- telescope
 
-keymap.set("n", "<leader>fp", "<cmd>Telescope find_files<cr>") -- find files within current working directory, respects .gitignore
+keymap.set("n", "<leader>fp", "<cmd>Telescope find_files hidden=true no_ignore=true<cr>") -- find files within current working directory, respects .gitignore
 keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>") -- find string in current working directory as you type
 keymap.set("n", "<leader>fg", "<cmd>Telescope grep_string<cr>") -- find string under cursor in current working directory
 keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>") -- list open buffers in current neovim instance

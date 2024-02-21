@@ -1,3 +1,4 @@
+-- GIT PLUGIN
 vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
 
 local Fl_Fugitive = vim.api.nvim_create_augroup("Fl_Fugitive", {})

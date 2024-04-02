@@ -36,6 +36,10 @@ nvim_lsp.lua_ls.setup {
   }
 }
 
+nvim_lsp.sourcekit.setup{
+  cmd = {'/usr/bin/sourcekit-lsp'}
+}
+
 -- Ocaml
 --
 --
@@ -50,7 +54,6 @@ nvim_lsp.lua_ls.setup {
 --end
 
 nvim_lsp.ocamllsp.setup {}
-
 
 -- Go lang
 --

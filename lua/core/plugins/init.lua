@@ -89,8 +89,6 @@ local plugins = {
 local opts = {}
 
 require("lazy").setup(plugins, opts)
-
-require("core/plugins/colorscheme")
 require("core.plugins.lualine")
 require("core/plugins/mason")
 require("core/plugins/completions")

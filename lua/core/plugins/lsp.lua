@@ -12,10 +12,6 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protoc
 --   },
 -- })
 
--- vim.keymap.set("n", "gd", "<cmd>Lspsaga lsp_finder<CR>", { silent = true })
--- vim.keymap.set('n', 'K', '<Cmd>Lspsaga hover_doc<cr>', { silent = true })
--- vim.keymap.set({"n","v"}, "<leader>ca", "<cmd>Lspsaga code_action<CR>", { silent = true })
--- vim.keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", { silent = true })
 --
 local nvim_lsp = require("lspconfig")
 
@@ -88,20 +84,20 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Displays hover information about the symbol under the cursor
     bufmap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
 
-    bufmap('n', 'gdd', '<cmd>lua vim.lsp.buf.definition()<cr>')
-    bufmap('n', 'gds', '<cmd>lua vim.lsp.buf.definition({jump_type="vsplit"})<cr>')
+    bufmap('n', 'gdf', '<cmd>lua vim.lsp.buf.definition()<cr>')
+    bufmap('n', 'gdfs', '<cmd>lua vim.lsp.buf.definition({jump_type="vsplit"})<cr>')
 
-    bufmap('n', 'gDD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
-    bufmap('n', 'gDs', '<cmd>lua vim.lsp.buf.declaration({jump_type="vsplit"})<cr>')
+    bufmap('n', 'gdc', '<cmd>lua vim.lsp.buf.declaration()<cr>')
+    bufmap('n', 'gdcs', '<cmd>lua vim.lsp.buf.declaration({jump_type="vsplit"})<cr>')
 
     -- Use formater
     bufmap("n", "gf", '<cmd>lua vim.lsp.buf.formatting<cr>')
 
     -- Lists all the implementations for the symbol under the cursor
-    bufmap('n', 'gu', '<cmd>lua vim.lsp.buf.implementation()<cr>')
+    bufmap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>')
 
     -- Jumps to the definition of the type symbol
-    bufmap('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>')
+    bufmap('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<cr>')
 
     -- Lists all the references
     bufmap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>')
@@ -110,10 +106,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     bufmap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
 
     -- Renames all references to the symbol under the cursor
-    bufmap('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>')
+    bufmap('n', '<leader>rn', vim.lsp.buf.rename, '[R]e[N]ame')
 
     -- Selects a code action available at the current cursor position
-    bufmap('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>')
+    bufmap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>')
     bufmap('x', '<F4>', '<cmd>lua vim.lsp.buf.range_code_action()<cr>')
 
     -- Show diagnostics in a floating window

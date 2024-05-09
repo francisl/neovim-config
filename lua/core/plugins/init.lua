@@ -100,3 +100,6 @@ require("core/plugins/harpoon")
 require("core/plugins/fugitive")
 require("core/plugins/copilot")
 require('go').setup()
+require('core/plugins/swift')
+require('core.plugins.templ')
+

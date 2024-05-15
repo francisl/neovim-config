@@ -2,16 +2,6 @@ require("mason-lspconfig").setup()
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
--- require('lspsaga').setup({
---   symbol_in_winbar = {
---     in_custom = false,
---     enable = true,
---     separator = ' ',
---     show_file = true,
---     file_formatter = ""
---   },
--- })
-
 --
 local nvim_lsp = require("lspconfig")
 
@@ -38,17 +28,6 @@ nvim_lsp.sourcekit.setup{
 
 -- Ocaml
 --
---
---local on_attach = function(client, bufnr)
---  if client.server_capabilities.documentFormattingProvider then
---      vim.api.nvim_create_autocmd("BufWritePre", {
---          group = vim.api.nvim_create_augroup("Format", { clear = true }),
---          buffer = bufnr,
---          callback = function() vim.lsp.buf.formatting_seq_sync() end
---      })
---  end
---end
-
 nvim_lsp.ocamllsp.setup {}
 
 -- Go lang
@@ -70,66 +49,44 @@ nvim_lsp.tsserver.setup {
 nvim_lsp.nimls.setup {
   cmd = { "nimlsp" }
 }
-
 nvim_lsp.eslint.setup {}
 
 vim.api.nvim_create_autocmd('LspAttach', {
   desc = 'LSP actions',
-  callback = function()
-    local bufmap = function(mode, lhs, rhs)
-      local opts = { buffer = true }
-      vim.keymap.set(mode, lhs, rhs, opts)
+  callback = function(event)
+    local map = function(mode, keys, func, desc)
+      local description = desc ~= nil and desc or ''
+      local opts = { buffer = true, desc = 'LSP: ' .. (description or '') }
+      vim.keymap.set(mode, keys, func, opts)
     end
 
+    local builtin = require('telescope.builtin')
     -- Displays hover information about the symbol under the cursor
-    bufmap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
-
-    bufmap('n', 'gdf', '<cmd>lua vim.lsp.buf.definition()<cr>')
-    bufmap('n', 'gdfs', '<cmd>lua vim.lsp.buf.definition({jump_type="vsplit"})<cr>')
-
-    bufmap('n', 'gdc', '<cmd>lua vim.lsp.buf.declaration()<cr>')
-    bufmap('n', 'gdcs', '<cmd>lua vim.lsp.buf.declaration({jump_type="vsplit"})<cr>')
+    map('n', 'K', vim.lsp.buf.hover)
+    map('n', 'gd', builtin.lsp_definitions)
+    map('n', 'gI', builtin.lsp_implementations)
+    map('n', 'gdc', vim.lsp.buf.declaration)
+    map('n', 'gds', builtin.lsp_document_symbols)
+    map('n', 'gws', builtin.lsp_dynamic_workspace_symbols)
 
     -- Use formater
-    bufmap("n", "gf", '<cmd>lua vim.lsp.buf.formatting<cr>')
-
-    -- Lists all the implementations for the symbol under the cursor
-    bufmap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>')
-
-    -- Jumps to the definition of the type symbol
-    bufmap('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<cr>')
-
-    -- Lists all the references
-    bufmap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>')
-
+    -- map("n", "gf", vim.lsp.buf.formatting)
+    map('n', 'gt', vim.lsp.buf.type_definition)
+    map('n', 'gr', vim.lsp.buf.references)
     -- Displays a function's signature information
-    bufmap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
-
+    map('n', 'gs', vim.lsp.buf.signature_help)
     -- Renames all references to the symbol under the cursor
-    bufmap('n', '<leader>rn', vim.lsp.buf.rename, '[R]e[N]ame')
-
+    map('n', '<leader>rn', vim.lsp.buf.rename, '[R]e[N]ame')
     -- Selects a code action available at the current cursor position
-    bufmap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>')
-    bufmap('x', '<F4>', '<cmd>lua vim.lsp.buf.range_code_action()<cr>')
-
+    map('n', '<leader>ca', vim.lsp.buf.code_action)
+    map('x', '<F4>', '<cmd>lua vim.lsp.buf.range_code_action()<cr>')
     -- Show diagnostics in a floating window
-    bufmap('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>')
-
-    -- Move to the previous diagnostic
-    bufmap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
-
-    -- Move to the next diagnostic
-    bufmap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>')
-
-    bufmap('n', '<space>f', '<cmd>lua vim.lsp.buf.format({ async = true })<cr>')
+    map('n', 'gl', vim.diagnostic.open_float)
+    map('n', '[d', vim.diagnostic.goto_prev)  -- Move to the previous diagnostic
+    map('n', ']d', vim.diagnostic.goto_next)  -- Move to the next diagnostic
+    map('n', '<space>f', '<cmd>lua vim.lsp.buf.format({ async = true })<cr>')
   end
 })
-
--- vim.api.nvim_create_autocmd({ "BufWritePost" }, {
---   callback = function()
---     require("lint").try_lint()
---   end,
--- })
 
 local lspconfig = require("lspconfig")
 
@@ -139,16 +96,14 @@ local lspconfig = require("lspconfig")
 local servers = { 'gopls', 'ccls', 'cmake', 'tsserver', 'templ' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup({
-    on_attach = on_attach,
+    -- on_attach = on_attach,
     capabilities = capabilities,
   })
 end
 vim.filetype.add({ extension = { templ = "templ" } })
 
-
-
 lspconfig.html.setup({
-    on_attach = on_attach,
+    -- on_attach = on_attach,
     capabilities = capabilities,
     filetypes = { "html", "templ" },
 })

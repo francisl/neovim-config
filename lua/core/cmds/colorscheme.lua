@@ -17,7 +17,7 @@ vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 local day = "day"
 local night = "night"
 local themeAppearance = day
-local themes = { day = "dayfox", night = "terafox" }
+local themes = { day = "dayfox", night = "slate" }
 
 local themeDaytime = function()
   local hr = tonumber(os.date('%H', os.time()))

@@ -26,10 +26,6 @@ nvim_lsp.sourcekit.setup{
   cmd = {'/usr/bin/sourcekit-lsp'}
 }
 
--- Ocaml
---
-nvim_lsp.ocamllsp.setup {}
-
 -- Go lang
 --
 require('go').setup {
@@ -39,7 +35,7 @@ local cfg = require('go.lsp').config() -- config() return the go.nvim gopls setu
 nvim_lsp.gopls.setup(cfg)
 
 -- TypeScript
-nvim_lsp.tsserver.setup {
+nvim_lsp["ts_ls"].setup {
   filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
   cmd = { "typescript-language-server", "--stdio" },
   capabilities = capabilities,
@@ -93,7 +89,7 @@ local lspconfig = require("lspconfig")
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 
-local servers = { 'gopls', 'ccls', 'cmake', 'tsserver', 'templ' }
+local servers = { 'gopls', 'ccls', 'cmake', 'ts_ls', 'templ' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup({
     -- on_attach = on_attach,

@@ -77,10 +77,11 @@ keymap.set("n", "<leader>fc", "<cmd>Telescope file_browser path=%:p:h select_buf
 keymap.set("n", "<leader><leader>", "<cmd>Telescope buffers<CR>")                              -- list available help tags
 keymap.set("n", '<leader>/', function()
   builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-    previewer = false,
+    previewer = true,
     winblend = 10
   })
 end)
+keymap.set("n", "<leader>th", "<cmd>Telescope colorscheme<cr>")
 
 -- undotree
 vim.keymap.set("n", "<leader>ut", vim.cmd.UndotreeToggle)

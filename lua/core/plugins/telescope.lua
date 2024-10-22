@@ -5,6 +5,11 @@ local telescope = require('telescope')
 
 telescope.setup({
   -- configure custom mappings
+  pickers = {
+    colorscheme = {
+      enable_preview = true
+    }
+  },
   defaults = {
     mappings = {
       n = {
@@ -60,7 +65,7 @@ telescope.setup({
 })
 
 telescope.load_extension("fzf")
-telescope.load_extension("file_browser")
+-- telescope.load_extension("file_browser")
 -- telescope.load_extension("live_grep_args")
 -- telescope.load_extension("grep_string")
 -- telescope.builtin.grep_string({ search = vim.fn.input("Grep > ")})

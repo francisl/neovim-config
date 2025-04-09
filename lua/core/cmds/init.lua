@@ -1,1 +1,1 @@
-require("core/cmds/colorscheme")
+require("core.cmds.colorscheme")

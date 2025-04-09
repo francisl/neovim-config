@@ -22,9 +22,11 @@ nvim_lsp.lua_ls.setup {
   }
 }
 
-nvim_lsp.sourcekit.setup {
-  cmd = { '/usr/bin/sourcekit-lsp' }
-}
+vim.api.nvim_create_user_command('LoadSourcekitLSP', function()
+  nvim_lsp.sourcekit.setup {
+    cmd = { '/usr/bin/sourcekit-lsp' }
+  }
+end, {})
 
 -- Go lang
 --

@@ -73,12 +73,12 @@ keymap.set("n", "<leader>bb", ":NvimTreeFindFile<CR>")
 local builtin = require 'telescope.builtin'
 keymap.set("n", "<leader>fp", "<cmd>Telescope find_files hidden=true no_ignore=true<cr>")      -- find files within current working directory, respects .gitignore
 keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>")                                  -- find string in current working directory as you type
-keymap.set("n", "<leader>fg", "<cmd>Telescope grep_string<cr>")                                -- find string under cursor in current working directory
+keymap.set("n", "<leader>fg", ":Telescope live_grep<CR>", { noremap = true, silent = true })   -- find string in current working directory
 keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>")                                    -- list open buffers in current neovim instance
 keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>")                                  -- list available help tags
 keymap.set("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>")                                   -- list available help tags
 keymap.set("n", "<leader>fd", "<cmd>Telescope lsp_document_symbols<cr>")                       -- list available help tags
-keymap.set("n", "<leader>ff", "<cmd>Telescope file_browser<cr>")                               -- list available help tags
+keymap.set("n", "<leader>ff", ":Telescope find_files<CR>", { noremap = true, silent = true })  -- find files within current working directory
 keymap.set("n", "<leader>fc", "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>") -- list available help tags
 keymap.set("n", "<leader><leader>", "<cmd>Telescope buffers<CR>")                              -- list available help tags
 keymap.set("n", '<leader>/', function()

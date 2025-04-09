@@ -1,4 +1,6 @@
 local cmp = require("cmp")
+local luasnip = require("luasnip") -- Added missing definition
+local select_opts = { behavior = cmp.SelectBehavior.Select } -- Added missing definition
 
 require("luasnip.loaders.from_vscode").lazy_load()
 
@@ -69,7 +71,7 @@ cmp.setup({
   },
   snippet = {
     expand = function(args)
-      require('luasnip').lsp_expand(args.body)
+      luasnip.lsp_expand(args.body)
     end,
   },
   sources = cmp.config.sources({

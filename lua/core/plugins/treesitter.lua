@@ -1,12 +1,7 @@
-require('nvim-treesitter').setup {
-  -- A list of parser names, or "all"
-  ensure_installed = { "c", "help", "lua", "go", "templ", "javascript", "typescript", "nim", "vim", "zig" },
-
-  -- Install parsers synchronously (only applied to `ensure_installed`)
-  sync_install = false,
-  auto_install = true,
+require("nvim-treesitter.configs").setup({
+  ensure_installed = { "c", "lua", "go", "templ", "javascript", "typescript", "nim", "vim", "zig", "vimdoc" }, -- Replaced "help" with "vimdoc"
   highlight = {
     enable = true,
   },
-}
+})
 

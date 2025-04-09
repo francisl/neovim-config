@@ -16,7 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Load plugins from lazy-deps directory
 local plugin_files = {
     "lazy-deps.themes",
-    "lazy-deps.tree",
+    "lazy-deps.nvim-tree",
     "lazy-deps.telescope",
     "lazy-deps.completion",
     "lazy-deps.lsp",
@@ -64,7 +64,7 @@ local configs = {
     "nvim-tree",
     "treesitter",
     "harpoon",
-    "fugitive",
+    "git",
     "copilot",
     "swift",
     "templ",
@@ -72,7 +72,7 @@ local configs = {
 }
 
 for _, config in ipairs(configs) do
-    local ok, err = pcall(require, "core.plugins." .. config)
+    local ok, err = pcall(require, "core.plugins.config." .. config)
     if not ok then
         vim.notify("Error loading plugin config: " .. config .. "\n" .. err, vim.log.levels.ERROR)
     end

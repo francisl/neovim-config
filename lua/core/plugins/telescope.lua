@@ -27,7 +27,7 @@ telescope.setup({
     --  '--column',
     --  '-uu'
     -- ,
-    file_ignore_patterns = { ".git/", "package-lock.json", "node_modules/", "build/", "coverage/", "dist/"}
+    file_ignore_patterns = { ".git/", "package-lock.json", "node_modules/", "build/", "coverage/", "dist/", "lib/", "core/"}
   },
   extensions = {
     fzf = {

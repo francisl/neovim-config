@@ -7,3 +7,8 @@ vim.keymap.set("i", "<C-Enter>", 'copilot#Accept("\\<CR>")', {
   replace_keycodes = false
 })
 
+vim.keymap.set("i", "<C-Space>", 'copilot#Accept("\\<CR>")', {
+  expr = true,
+  replace_keycodes = false
+})
+

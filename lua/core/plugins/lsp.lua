@@ -22,8 +22,8 @@ nvim_lsp.lua_ls.setup {
   }
 }
 
-nvim_lsp.sourcekit.setup{
-  cmd = {'/usr/bin/sourcekit-lsp'}
+nvim_lsp.sourcekit.setup {
+  cmd = { '/usr/bin/sourcekit-lsp' }
 }
 
 -- Go lang
@@ -41,11 +41,6 @@ nvim_lsp["ts_ls"].setup {
   capabilities = capabilities,
 }
 
--- Nim
-nvim_lsp.nimls.setup {
-  cmd = { "nimlsp" }
-}
-nvim_lsp.eslint.setup {}
 
 vim.api.nvim_create_autocmd('LspAttach', {
   desc = 'LSP actions',
@@ -57,30 +52,36 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     local builtin = require('telescope.builtin')
-    -- Displays hover information about the symbol under the cursor
-    map('n', 'K', vim.lsp.buf.hover)
-    map('n', 'gd', builtin.lsp_definitions)
-    map('n', 'gI', builtin.lsp_implementations)
-    map('n', 'gdc', vim.lsp.buf.declaration)
-    map('n', 'gds', builtin.lsp_document_symbols)
-    map('n', 'gws', builtin.lsp_dynamic_workspace_symbols)
 
-    -- Use formater
-    -- map("n", "gf", vim.lsp.buf.formatting)
-    map('n', 'gt', vim.lsp.buf.type_definition)
-    map('n', 'gr', vim.lsp.buf.references)
-    -- Displays a function's signature information
-    map('n', 'gs', vim.lsp.buf.signature_help)
+
+    -- Use leader for common navigation/lookup actions
+    map('n', '<leader>gd', builtin.lsp_definitions, 'Go to definition')
+    map('n', '<leader>gi', builtin.lsp_implementations, 'Go to implementation')
+    map('n', '<leader>gc', vim.lsp.buf.declaration, 'Go to declaration')
+    map('n', '<leader>gs', builtin.lsp_document_symbols, 'Document symbols')
+    map('n', '<leader>gw', builtin.lsp_dynamic_workspace_symbols, 'Workspace symbols')
+    map('n', '<leader>gt', vim.lsp.buf.type_definition, 'Go to type definition')
+    map('n', '<leader>gr', builtin.lsp_references, 'Go to references')
+
+    -- Function signature information
+    map('n', '<leader>sh', vim.lsp.buf.signature_help, 'Signature help')
+    -- Displays hover information about the symbol under the cursor
+    map('n', 'K', vim.lsp.buf.hover, 'Hover documentation')
+
     -- Renames all references to the symbol under the cursor
-    map('n', '<leader>rn', vim.lsp.buf.rename, '[R]e[N]ame')
-    -- Selects a code action available at the current cursor position
-    map('n', '<leader>ca', vim.lsp.buf.code_action)
-    map('x', '<F4>', '<cmd>lua vim.lsp.buf.range_code_action()<cr>')
-    -- Show diagnostics in a floating window
-    map('n', 'gl', vim.diagnostic.open_float)
-    map('n', '[d', vim.diagnostic.goto_prev)  -- Move to the previous diagnostic
-    map('n', ']d', vim.diagnostic.goto_next)  -- Move to the next diagnostic
-    map('n', '<space>f', '<cmd>lua vim.lsp.buf.format({ async = true })<cr>')
+    map('n', '<leader>rn', vim.lsp.buf.rename, 'Rename symbol')
+
+    -- Code actions
+    map('n', '<leader>ca', vim.lsp.buf.code_action, 'Code action')
+    map('x', '<leader>ca', function() vim.lsp.buf.range_code_action() end, 'Range code action')
+
+    -- Diagnostics
+    map('n', '<leader>di', vim.diagnostic.open_float, 'Show diagnostic details')
+    map('n', '<leader>dp', vim.diagnostic.goto_prev, 'Previous diagnostic')
+    map('n', '<leader>dn', vim.diagnostic.goto_next, 'Next diagnostic')
+
+    -- Formatting
+    map('n', '<leader>fm', function() vim.lsp.buf.format({ async = true }) end, 'Format document')
   end
 })
 
@@ -99,9 +100,7 @@ end
 vim.filetype.add({ extension = { templ = "templ" } })
 
 lspconfig.html.setup({
-    -- on_attach = on_attach,
-    capabilities = capabilities,
-    filetypes = { "html", "templ" },
+  -- on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "html", "templ" },
 })
-
-

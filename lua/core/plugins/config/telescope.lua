@@ -63,9 +63,28 @@ telescope.setup({
   },
 })
 
+local keymap = vim.keymap -- for conciseness
+-- telescope
+local builtin = require 'telescope.builtin'
+keymap.set("n", "<leader>fp", "<cmd>Telescope find_files hidden=true no_ignore=true<cr>", { desc = "Find files, respects .gitignore" })
+keymap.set("n", "<leader>fg", ":Telescope live_grep<CR>", { noremap = true, silent = true, desc = "Find string" })
+keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "List open buffers" })
+keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "List available help tags" })
+keymap.set("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>", { desc = "List recently opened files" })
+keymap.set("n", "<leader>fd", "<cmd>Telescope lsp_document_symbols<cr>", { desc = "List document symbols" })
+keymap.set("n", "<leader>ff", ":Telescope find_files<CR>", { noremap = true, silent = true, desc = "Find files" })
+keymap.set("n", "<leader>fc", "<cmd>Telescope file_browser<CR>", { desc = "Browse files in file explorer" })
+keymap.set("n", '<leader>/', function()
+  builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+    previewer = true,
+    winblend = 10
+  })
+end, { desc = "Fuzzy find in current buffer" })
+keymap.set("n", "<leader>th", "<cmd>Telescope colorscheme<cr>", { desc = "Browse and select colorschemes" })
+
 telescope.load_extension("fzf")
 -- Load other extensions only when needed
--- telescope.load_extension("file_browser")
--- telescope.load_extension("live_grep_args")
+telescope.load_extension("file_browser")
+telescope.load_extension("live_grep_args")
 -- telescope.load_extension("grep_string")
 -- telescope.builtin.grep_string({ search = vim.fn.input("Grep > ")})

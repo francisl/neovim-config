@@ -67,6 +67,7 @@ local configs = {
     "git",
     "copilot",
     "swift",
+    "oil",
     "templ",
     "tmux",
 }

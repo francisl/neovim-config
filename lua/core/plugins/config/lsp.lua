@@ -59,31 +59,32 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Use leader for common navigation/lookup actions
     map('n', '<leader>gd', builtin.lsp_definitions, 'Go to definition')
     map('n', '<leader>gi', builtin.lsp_implementations, 'Go to implementation')
-    map('n', '<leader>gc', vim.lsp.buf.declaration, 'Go to declaration')
+    map('n', '<leader>gc', '<cmd>Lspsaga goto_definition<CR>', 'Go to declaration')
     map('n', '<leader>gs', builtin.lsp_document_symbols, 'Document symbols')
     map('n', '<leader>gw', builtin.lsp_dynamic_workspace_symbols, 'Workspace symbols')
-    map('n', '<leader>gt', vim.lsp.buf.type_definition, 'Go to type definition')
+    map('n', '<leader>gt', '<cmd>Lspsaga goto_type_definition<CR>', 'Go to type definition')
     map('n', '<leader>gr', builtin.lsp_references, 'Go to references')
 
     -- Function signature information
-    map('n', '<leader>sh', vim.lsp.buf.signature_help, 'Signature help')
+    map('n', '<leader>sh', '<cmd>Lspsaga signature_help<CR>', 'Signature help')
     -- Displays hover information about the symbol under the cursor
-    map('n', 'K', vim.lsp.buf.hover, 'Hover documentation')
+    map('n', 'K', '<cmd>Lspsaga hover_doc<CR>', 'Hover documentation')
 
     -- Renames all references to the symbol under the cursor
-    map('n', '<leader>rn', vim.lsp.buf.rename, 'Rename symbol')
+    map('n', '<leader>rn', '<cmd>Lspsaga rename<CR>', 'Rename symbol')
 
     -- Code actions
-    map('n', '<leader>ca', vim.lsp.buf.code_action, 'Code action')
-    map('x', '<leader>ca', function() vim.lsp.buf.range_code_action() end, 'Range code action')
+    -- map('n', '<leader>ca', vim.lsp.buf.code_action, 'Code action')
+    map('n', '<leader>ga', '<cmd>Lspsaga code_action<CR>', 'Code action')
+    map('x', '<leader>ga', '<cmd>Lspsaga range_code_action<CR>', 'Range code action')
 
     -- Diagnostics
-    map('n', '<leader>di', vim.diagnostic.open_float, 'Show diagnostic details')
-    map('n', '<leader>dp', vim.diagnostic.goto_prev, 'Previous diagnostic')
-    map('n', '<leader>dn', vim.diagnostic.goto_next, 'Next diagnostic')
+    map('n', '<leader>di', '<cmd>Lspsaga show_line_diagnostics<CR>', 'Show diagnostic details')
+    map('n', '<leader>dp', '<cmd>Lspsaga diagnostic_jump_prev<CR>', 'Previous diagnostic')
+    map('n', '<leader>dn', '<cmd>Lspsaga diagnostic_jump_next<CR>', 'Next diagnostic')
 
     -- Formatting
-    map('n', '<leader>fm', function() vim.lsp.buf.format({ async = true }) end, 'Format document')
+    map('n', '<leader>gm', function() vim.lsp.buf.format({ async = true }) end, 'Format document')
   end
 })
 
@@ -106,3 +107,10 @@ lspconfig.html.setup({
   capabilities = capabilities,
   filetypes = { "html", "templ" },
 })
+
+
+-- Saga
+--
+vim.keymap.set('n','<leader>`', '<cmd>Lspsaga term_toggle<CR>', {desc = "Toggle terminal"})
+
+

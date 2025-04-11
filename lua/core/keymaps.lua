@@ -22,7 +22,7 @@ keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 keymap.set("n", "<leader>sv", "<C-w>v")     -- split vert
 keymap.set("n", "<leader>sn", "<C-w>s")     -- split hori
 keymap.set("n", "<leader>se", "<C-w>=")     -- make split windows equal width
-keymap.set("n", "<leader>sx", ":close<CR>") -- close split window
+keymap.set("n", "<leader>sx", ":SmartClose<CR>") -- close split window
 -- keymap.set("n", "<leader>sh", "<C-w>h")
 -- keymap.set("n", "<leader>sl", "<C-w>l")
 -- keymap.set("n", "<leader>sk", "<C-w>k")
@@ -69,25 +69,7 @@ keymap.set("n", "<leader>bt", ":NvimTreeFindFileToggle<CR>")
 keymap.set("n", "<leader>bf", ":NvimTreeFocus<CR>")
 keymap.set("n", "<leader>bb", ":NvimTreeFindFile<CR>")
 
--- telescope
-local builtin = require 'telescope.builtin'
-keymap.set("n", "<leader>fp", "<cmd>Telescope find_files hidden=true no_ignore=true<cr>")      -- find files within current working directory, respects .gitignore
-keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>")                                  -- find string in current working directory as you type
-keymap.set("n", "<leader>fg", ":Telescope live_grep<CR>", { noremap = true, silent = true })   -- find string in current working directory
-keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>")                                    -- list open buffers in current neovim instance
-keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>")                                  -- list available help tags
-keymap.set("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>")                                   -- list available help tags
-keymap.set("n", "<leader>fd", "<cmd>Telescope lsp_document_symbols<cr>")                       -- list available help tags
-keymap.set("n", "<leader>ff", ":Telescope find_files<CR>", { noremap = true, silent = true })  -- find files within current working directory
-keymap.set("n", "<leader>fc", "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>") -- list available help tags
-keymap.set("n", "<leader><leader>", "<cmd>Telescope buffers<CR>")                              -- list available help tags
-keymap.set("n", '<leader>/', function()
-  builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-    previewer = true,
-    winblend = 10
-  })
-end)
-keymap.set("n", "<leader>th", "<cmd>Telescope colorscheme<cr>")
+
 
 -- undotree
 vim.keymap.set("n", "<leader>ut", vim.cmd.UndotreeToggle)

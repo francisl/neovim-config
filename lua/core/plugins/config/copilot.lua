@@ -12,3 +12,8 @@ vim.keymap.set("i", "<C-Space>", 'copilot#Accept("\\<CR>")', {
   replace_keycodes = false
 })
 
+vim.keymap.set("n", "<leader>cs", 'copilot#Suggestion("\\<CR>")', {
+  expr = true,
+  replace_keycodes = false
+}, "Copilot Suggestion")
+

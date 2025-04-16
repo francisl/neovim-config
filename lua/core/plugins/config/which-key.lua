@@ -45,6 +45,7 @@ wk.add({
   { "<leader>h", group = "Harpoon" },
   { "<leader>s", group = "Snacks" },
   { "<leader>u", group = "UI Toggle" },
+  { "<leader>ut", group = "UI Theme" },
   { "<leader>w", group = "Window" },
   { "<leader>ws", group = "Window Split" },
   { "<leader>wt", group = "Window Tabs" },

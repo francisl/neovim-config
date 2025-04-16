@@ -39,7 +39,7 @@ wk.add({
   { "<leader>c", group = "Code" },
   { "<leader>ce", group = "Code Errors" },
   { "<leader>e", group = "Edit" },
-  { "<leader>f", group = "Find" },
+  { "<leader>f", group = "Files" },
   { "<leader>g", group = "Git" },
   { "<leader>ga", group = "Git Actions" },
   { "<leader>h", group = "Harpoon" },

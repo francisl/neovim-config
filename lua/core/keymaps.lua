@@ -19,35 +19,15 @@ keymap.set("n", "<C-a>", "ggVG")
 keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- Split screen
-keymap.set("n", "<leader>sv", "<C-w>v")     -- split vert
-keymap.set("n", "<leader>sn", "<C-w>s")     -- split hori
-keymap.set("n", "<leader>se", "<C-w>=")     -- make split windows equal width
-keymap.set("n", "<leader>sx", ":SmartClose<CR>") -- close split window
--- keymap.set("n", "<leader>sh", "<C-w>h")
--- keymap.set("n", "<leader>sl", "<C-w>l")
--- keymap.set("n", "<leader>sk", "<C-w>k")
--- keymap.set("n", "<leader>sj", "<C-w>j")
+keymap.set("n", "<leader>wsh", "<C-w>v", { desc = "Split window vertically" })     -- split vert
+keymap.set("n", "<leader>wsv", "<C-w>s", { desc = "Split window horizontally" } )     -- split hori
+keymap.set("n", "<leader>wse", "<C-w>=", { desc = "Make split windows equal width" })     -- make split windows equal width
+keymap.set("n", "<leader>wx", ":SmartClose<CR>", { desc = "Close split window" }) -- close split window
 
--- Resize splits with arrow keys
-vim.api.nvim_set_keymap('n', '<C-S-k>', ':resize +2<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-S-j>', ':resize -2<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-S-l>', ':vertical resize -2<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-S-h>', ':vertical resize +2<CR>', { noremap = true })
-
-keymap.set("n", "<C-_>", "<C-w><")             --  go to previous tab
-keymap.set("n", "<C-=>", "<C-w>>")             --  go to previous tab
-
-keymap.set("n", "<leader>to", ":tabnew<CR>")   -- open new tab
-keymap.set("n", "<leader>tx", ":tabclose<CR>") -- close current tab
-keymap.set("n", "<leader>tn", ":tabn<CR>")     --  go to next tab
-keymap.set("n", "<leader>tp", ":tabp<CR>")     --  go to previous tab
-
--- debugging
--- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+keymap.set("n", "<leader>wto", ":tabnew<CR>", { desc = "Open new tab" })   -- open new tab
+keymap.set("n", "<leader>wtx", ":tabclose<CR>", { desc = "Close current tab" }) -- close current tab
+keymap.set("n", "<leader>wtn", ":tabn<CR>", { desc = "Go to next tab" })     --  go to next tab
+keymap.set("n", "<leader>wtp", ":tabp<CR>", { desc = "Go to previous tab" })     --  go to previous tab
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
@@ -62,18 +42,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- plugins
 -- vim-maximizer
-keymap.set("n", "<leader>sm", ":MaximizerToggle<CR>")
+-- keymap.set("n", "<leader>sm", ":MaximizerToggle<CR>")
 
 -- nvim-tree
-keymap.set("n", "<leader>bt", ":NvimTreeFindFileToggle<CR>")
-keymap.set("n", "<leader>bf", ":NvimTreeFocus<CR>")
-keymap.set("n", "<leader>bb", ":NvimTreeFindFile<CR>")
-
-
+-- keymap.set("n", "<leader>bt", ":NvimTreeFindFileToggle<CR>")
+-- keymap.set("n", "<leader>bf", ":NvimTreeFocus<CR>")
+-- keymap.set("n", "<leader>bb", ":NvimTreeFindFile<CR>")
 
 -- undotree
-vim.keymap.set("n", "<leader>ut", vim.cmd.UndotreeToggle)
-vim.keymap.set("n", "<leader>uf", vim.cmd.UndotreeFocus)
+vim.keymap.set("n", "<leader>et", vim.cmd.UndotreeToggle, { desc = "Undo Tree Toggle" })
+vim.keymap.set("n", "<leader>ef", vim.cmd.UndotreeFocus, { desc = "Undo Tree Focus" })
 
 -- tmux
 keymap.set('n', '<c-k>', ':wincmd k<cr>')
@@ -84,4 +62,22 @@ keymap.set('n', '<c-l>', ':TmuxNavigateRight<cr>')
 keymap.set('n', '<c-k>', ':TmuxNavigateUp<cr>')
 keymap.set('n', '<c-j>', ':TmuxNavigateDown<cr>')
 keymap.set('n', '<c-h>', ':TmuxNavigateLeft<cr>')
+
+-- Temporary resize mode
+keymap.set("n", "<leader>wr", function()
+  vim.cmd("echo 'Resize mode (hjkl to resize, q or Esc to quit)'")
+  local mode = true
+  while mode do
+    local char = vim.fn.getchar()
+    if type(char) == "number" then
+      char = vim.fn.nr2char(char)
+      if char == "l" then vim.cmd("vertical resize -2") end
+      if char == "h" then vim.cmd("vertical resize +2") end
+      if char == "j" then vim.cmd("resize +2") end
+      if char == "k" then vim.cmd("resize -2") end
+      if char == "q" or char == "\27" then mode = false end -- \27 is Esc
+      vim.cmd("redraw") -- Force UI update after each action
+    end
+  end
+end, { desc = "Enter temporary resize mode" })
 

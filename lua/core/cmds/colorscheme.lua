@@ -7,8 +7,6 @@ vim.o.termguicolors = true
 --   'mhartington/oceanic-next',
 --   'EdenEast/nightfox.nvim',
 
-
-
 -- vim.cmd [[ colorscheme kanagawa ]]
 -- vim.cmd [[ colorscheme OceanicNext ]]
 -- vim.cmd [[ colorscheme gruvbox ]]
@@ -58,6 +56,7 @@ local function get_os_dark_mode()
       handle:close()
       return result:match("True") ~= nil
     end
+
   end
   -- Default to light mode if detection fails
   return false
@@ -65,11 +64,24 @@ end
 
 local apply_theme = function(appearance, use_transparency)
   use_transparency = use_transparency == nil and true or use_transparency
+  
+  -- First clear any existing highlights
+  vim.cmd("hi clear")
+  if vim.fn.exists("syntax_on") then
+    vim.cmd("syntax reset")
+  end
+  
+  -- Apply the new colorscheme
   vim.cmd("colorscheme " .. themes[appearance])
-  if use_transparency then
+  
+  -- Only apply transparency for dark themes
+  if use_transparency and appearance == dark then
     vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
     vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
   end
+  
+  -- Force a redraw to ensure all colors are applied
+  vim.cmd("redraw!")
 end
 
 local sync_theme = function()
@@ -121,3 +133,7 @@ vim.api.nvim_create_user_command(
   end,
   {}
 )
+
+vim.keymap.set("n", "<leader>ut", ":colorschemeToggle<cr>", { desc = "Toggle Theme" })
+vim.keymap.set("n", "<leader>ur", ":colorschemeReset<cr>", { desc = "Reset Theme" })
+vim.keymap.set("n", "<leader>uS", ":colorschemeSync<cr>", { desc = "Sync Theme" })

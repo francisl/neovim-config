@@ -15,17 +15,20 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Load plugins from lazy-deps directory
 local plugin_files = {
-    "lazy-deps.themes",
-    "lazy-deps.nvim-tree",
-    "lazy-deps.telescope",
-    "lazy-deps.completion",
-    "lazy-deps.lsp",
-    "lazy-deps.misc",
+    "lazy-deps/themes",
+    "lazy-deps/snacks",
+    -- use snacks instead "lazy-deps/nvim-tree",
+    -- "lazy-deps/telescope",
+    "lazy-deps/completion",
+    "lazy-deps/lsp",
+    "lazy-deps/misc",
+    "lazy-deps/avante",
+    "lazy-deps/todo-comments",
 }
 
 local plugins = {}
 for _, file in ipairs(plugin_files) do
-    local ok, plugin_group = pcall(require, "core.plugins." .. file)
+    local ok, plugin_group = pcall(require, "core/plugins/" .. file)
     if ok and type(plugin_group) == "table" then
         for _, plugin in ipairs(plugin_group) do
             table.insert(plugins, plugin)
@@ -60,8 +63,8 @@ local configs = {
     "mason",
     "completions",
     "lsp",
-    "telescope",
-    "nvim-tree",
+    -- "telescope",
+    -- "nvim-tree",
     "treesitter",
     "harpoon",
     "git",
@@ -70,10 +73,11 @@ local configs = {
     "oil",
     "templ",
     "tmux",
+    "which-key",
 }
 
 for _, config in ipairs(configs) do
-    local ok, err = pcall(require, "core.plugins.config." .. config)
+    local ok, err = pcall(require, "core/plugins/config." .. config)
     if not ok then
         vim.notify("Error loading plugin config: " .. config .. "\n" .. err, vim.log.levels.ERROR)
     end

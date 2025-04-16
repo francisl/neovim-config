@@ -134,6 +134,6 @@ vim.api.nvim_create_user_command(
   {}
 )
 
-vim.keymap.set("n", "<leader>ut", ":colorschemeToggle<cr>", { desc = "Toggle Theme" })
-vim.keymap.set("n", "<leader>ur", ":colorschemeReset<cr>", { desc = "Reset Theme" })
-vim.keymap.set("n", "<leader>uS", ":colorschemeSync<cr>", { desc = "Sync Theme" })
+vim.keymap.set("n", "<leader>utt", ":colorschemeToggle<cr>", { desc = "Toggle Theme" })
+vim.keymap.set("n", "<leader>utr", ":colorschemeReset<cr>", { desc = "Reset Theme" })
+vim.keymap.set("n", "<leader>uts", ":colorschemeSync<cr>", { desc = "Sync Theme" })

@@ -68,7 +68,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('x', '<leader>ca', '<cmd>Lspsaga range_code_action<CR>', 'Range code action')
 
     -- Diagnostics
-    map('n', '<leader>cei', '<cmd>Lspsaga show_line_diagnostics<CR>', 'Show diagnostic details')
+    map('n', '<leader>cel', '<cmd>Lspsaga show_line_diagnostics<CR>', 'Show diagnostic details')
     map('n', '<leader>cep', '<cmd>Lspsaga diagnostic_jump_prev<CR>', 'Previous diagnostic')
     map('n', '<leader>cen', '<cmd>Lspsaga diagnostic_jump_next<CR>', 'Next diagnostic')
 

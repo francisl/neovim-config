@@ -1,15 +1,19 @@
 local vim = vim or {}
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable", -- latest stable release
-        lazypath,
-    })
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -17,8 +21,7 @@ vim.opt.rtp:prepend(lazypath)
 local plugin_files = {
     "lazy-deps/themes",
     "lazy-deps/snacks",
-    -- use snacks instead "lazy-deps/nvim-tree",
-    -- "lazy-deps/telescope",
+    "lazy-deps/ai",
     "lazy-deps/completion",
     "lazy-deps/lsp",
     "lazy-deps/misc",
@@ -40,6 +43,9 @@ end
 
 -- Setup lazy.nvim with plugins
 require("lazy").setup(plugins, {
+    install = { colorscheme = { "habamax" } },
+    -- automatically check for plugin updates
+    checker = { enabled = true },
     change_detection = {
         notify = false, -- Set to false to not get notifications when changes are found
     },
@@ -63,17 +69,16 @@ local configs = {
     "mason",
     "completions",
     "lsp",
-    -- "telescope",
-    -- "nvim-tree",
     "treesitter",
     "harpoon",
     "git",
-    "copilot",
+    "ai",
     "swift",
     "oil",
     "templ",
     "tmux",
     "which-key",
+    "avante",
 }
 
 for _, config in ipairs(configs) do

@@ -1,3 +1,13 @@
+
+-- If template error 
+-- Install cargo (via rustup or whatever), 
+-- then cd ~/.local/share/nvim/lazy/avante, 
+-- then make BUILD_FROM_SOURCE=true. 
+-- Should be good to go after that.
+-- If you get an error about missing dependencies, install them.
+-- reference: https://github.com/yetone/avante.nvim/issues/10
+
+
 return {
   "yetone/avante.nvim",
   event = "VeryLazy",
@@ -16,11 +26,14 @@ return {
     -- },
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-  build = "make",
+  build = "make BUILD_FROM_SOURCE=true",
   -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
-    "stevearc/dressing.nvim",
+    {
+      'stevearc/dressing.nvim',
+      opts = {},
+    },
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim",
     --- The below dependencies are optional,

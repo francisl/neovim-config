@@ -43,6 +43,8 @@ opt.splitbelow = true
 
 -- Appearance
 opt.cursorline = true
+opt.laststatus = 3
+vim.opt.signcolumn = "yes:3"
 
 -- File browser
 opt.hidden = true

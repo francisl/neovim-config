@@ -4,9 +4,7 @@ return {
   "williamboman/mason-lspconfig.nvim",
   {
     'nvimdev/lspsaga.nvim',
-    config = function()
-      require('lspsaga').setup({})
-    end,
+    opts = {},
     dependencies = {
       'nvim-treesitter/nvim-treesitter',   -- optional
       'nvim-tree/nvim-web-devicons',       -- optional
@@ -19,9 +17,7 @@ return {
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
     },
-    config = function()
-      require("go").setup()
-    end,
+    opts ={},
     event = { "CmdlineEnter" },
     ft = { "go", 'gomod' },
     build = ':lua require("go.install").update_all_sync()',

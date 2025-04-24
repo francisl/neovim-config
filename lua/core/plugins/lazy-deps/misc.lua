@@ -1,21 +1,22 @@
 return {
   'nvim-lua/plenary.nvim',
   -- Git
-  'lewis6991/gitsigns.nvim',
   'tpope/vim-fugitive',
   { 'echasnovski/mini.nvim', version = '*' },
-  'tpope/vim-commentary',
   'mbbill/undotree',
   {
     'ThePrimeagen/harpoon',
     event = "VeryLazy",
   },
-  'sbdchd/neoformat',
   'mfussenegger/nvim-lint',
   'stevearc/oil.nvim',
   'nvim-lualine/lualine.nvim',
-  'nvim-treesitter/nvim-treesitter',
+  {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   "christoomey/vim-tmux-navigator",
+  {
+    'stevearc/dressing.nvim',
+    opts = {},
+  },
   "MunifTanjim/nui.nvim",
   {
     "folke/ts-comments.nvim",
@@ -26,7 +27,20 @@ return {
   {
    "folke/which-key.nvim",
    event = "VeryLazy",
-   opts = {},
+   opts = {
+    preset = "helix",
+    win = {
+      border = "rounded",
+      padding = { 2, 2 },
+      wo = {
+        winblend = 2 
+      }
+    },
+    layout = {
+      width = { min = 20, max = 35 },
+      spacing = 4,
+    },
+   },
    keys = {
      {
        "<leader>?",

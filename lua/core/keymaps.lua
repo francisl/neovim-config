@@ -1,10 +1,7 @@
 local keymap = vim.keymap -- for conciseness
 
 -- general keymaps
-
 keymap.set("i", "<S-K>K", "<ESC>")
-
-keymap.set("n", "<leader>nh", ":nohl<CR>")
 
 -- deletion
 keymap.set("n", "x", '"_x')
@@ -22,7 +19,6 @@ keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 keymap.set("n", "<leader>wsh", "<C-w>v", { desc = "Split window vertically" })     -- split vert
 keymap.set("n", "<leader>wsv", "<C-w>s", { desc = "Split window horizontally" } )     -- split hori
 keymap.set("n", "<leader>wse", "<C-w>=", { desc = "Make split windows equal width" })     -- make split windows equal width
-keymap.set("n", "<leader>wx", ":SmartClose<CR>", { desc = "Close split window" }) -- close split window
 
 keymap.set("n", "<leader>wto", ":tabnew<CR>", { desc = "Open new tab" })   -- open new tab
 keymap.set("n", "<leader>wtx", ":tabclose<CR>", { desc = "Close current tab" }) -- close current tab

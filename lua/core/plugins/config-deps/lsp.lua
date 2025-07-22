@@ -22,11 +22,24 @@ nvim_lsp.lua_ls.setup {
   }
 }
 
+require("ionide").setup {
+  on_attach = function(client, bufnr)
+    on_attach(client, bufnr)
+    vim.lsp.codelens.refresh()
+
+  end,
+  capabilities = capabilities,
+}
+
 vim.api.nvim_create_user_command('LoadSourcekitLSP', function()
   nvim_lsp.sourcekit.setup {
     cmd = { '/usr/bin/sourcekit-lsp' }
   }
 end, {})
+
+-- Python and Mojo
+--
+require('lspconfig').mojo.setup {}
 
 -- Go lang
 --
@@ -96,10 +109,4 @@ lspconfig.html.setup({
   capabilities = capabilities,
   filetypes = { "html", "templ" },
 })
-
-
--- Saga
---
-vim.keymap.set('n','<leader>`', '<cmd>Lspsaga term_toggle<CR>', {desc = "Toggle terminal"})
-
 

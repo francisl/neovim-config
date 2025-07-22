@@ -51,8 +51,19 @@ opt.hidden = true
 opt.confirm = true
 
 -- Performance
-opt.updatetime = 300
-opt.timeoutlen = 500
+opt.updatetime = 50
+opt.timeoutlen = 300
+opt.redrawtime = 1500
+opt.lazyredraw = true
+opt.ttyfast = true
+
+-- Disable some built-in plugins we don't ne
+
+-- Set faster grep program if ripgrep is available
+if vim.fn.executable('rg') == 1 then
+    opt.grepprg = 'rg --vimgrep --no-heading --smart-case'
+    opt.grepformat = '%f:%l:%c:%m'
+end
 
 -- NvimTree configuration
 vim.g.nvim_tree_update_focused_file = { enable = true }

@@ -26,74 +26,84 @@ local dark = "dark"
 local invertAppearance = false
 local themes = { light = "dayfox", dark = "slate" }
 
+-- Cache the OS check result and add a timeout
+local cached_os_dark_mode = nil
+local last_check_time = 0
+local check_interval = 1000 -- Check every 1 second
+
 local function get_os_dark_mode()
+  local current_time = vim.loop.now()
+  if cached_os_dark_mode ~= nil and (current_time - last_check_time) < check_interval then
+    return cached_os_dark_mode
+  end
+
   local os_name = vim.loop.os_uname().sysname
+  local is_dark = false
 
   if os_name == "Darwin" then
-    -- macOS: Use `osascript` to check dark mode
-    local handle = io.popen(
-    'osascript -e "tell application \\"System Events\\" to tell appearance preferences to get dark mode"')
+    local handle = io.popen('defaults read -g AppleInterfaceStyle 2>/dev/null')
     if handle then
       local result = handle:read("*a")
       handle:close()
-      return result:match("true") ~= nil
+      is_dark = result:match("Dark") ~= nil
     end
   elseif os_name == "Linux" then
-    -- Linux (GNOME): Use `gsettings` to check dark mode
     local handle = io.popen("gsettings get org.gnome.desktop.interface color-scheme")
     if handle then
       local result = handle:read("*a")
       handle:close()
-      return result:match("dark") ~= nil
+      is_dark = result:match("dark") ~= nil
     end
   elseif os_name == "Windows_NT" then
-    -- Windows: Use PowerShell command to check dark mode
-    local handle = io.popen(
-      'powershell.exe -Command "[System.Console]::WriteLine((Get-ItemProperty -Path HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize).AppsUseLightTheme -eq 0)"'
-    )
+    local handle = io.popen('powershell.exe -Command "[System.Console]::WriteLine((Get-ItemProperty -Path HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize).AppsUseLightTheme -eq 0)"')
     if handle then
       local result = handle:read("*a")
       handle:close()
-      return result:match("True") ~= nil
+      is_dark = result:match("True") ~= nil
     end
-
   end
-  -- Default to light mode if detection fails
-  return false
+
+  cached_os_dark_mode = is_dark
+  last_check_time = current_time
+  return is_dark
 end
 
-local apply_theme = function(appearance, use_transparency)
+-- Cache the highlight groups
+local cached_highlights = {}
+
+local function apply_theme(appearance, use_transparency)
   use_transparency = use_transparency == nil and true or use_transparency
   
-  -- First clear any existing highlights
-  vim.cmd("hi clear")
-  if vim.fn.exists("syntax_on") then
-    vim.cmd("syntax reset")
+  -- Check if we're already using this theme
+  if vim.g.colors_name == themes[appearance] then
+    return
   end
   
-  -- Apply the new colorscheme
-  vim.cmd("colorscheme " .. themes[appearance])
+  -- Use vim.cmd.colorscheme for better performance
+  vim.cmd.colorscheme(themes[appearance])
   
-  -- Only apply transparency for dark themes
   if use_transparency and appearance == dark then
-    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    -- Cache and reuse highlight groups
+    if not cached_highlights[appearance] then
+      cached_highlights[appearance] = {
+        normal = vim.api.nvim_get_hl(0, { name = "Normal" }),
+        float = vim.api.nvim_get_hl(0, { name = "NormalFloat" })
+      }
+      cached_highlights[appearance].normal.bg = "NONE"
+      cached_highlights[appearance].float.bg = "NONE"
+    end
+    
+    vim.api.nvim_set_hl(0, "Normal", cached_highlights[appearance].normal)
+    vim.api.nvim_set_hl(0, "NormalFloat", cached_highlights[appearance].float)
   end
-  
-  -- Force a redraw to ensure all colors are applied
-  vim.cmd("redraw!")
 end
 
-local sync_theme = function()
+local function sync_theme()
   invertAppearance = false
-  if get_os_dark_mode() then
-    apply_theme(dark)
-  else
-    apply_theme(light)
-  end
+  apply_theme(get_os_dark_mode() and dark or light)
 end
 
-local theme_toggle = function()
+local function theme_toggle()
   local isDark = get_os_dark_mode()
 
   if not invertAppearance then
@@ -105,35 +115,37 @@ local theme_toggle = function()
   end
 end
 
--- Update background on startup
-sync_theme()
+-- Defer initial theme application to after startup
+vim.schedule(function()
+  sync_theme()
+end)
 
--- Optionally re-check on focus gain
+-- Create autocommands and commands in a single batch
+local theme_group = vim.api.nvim_create_augroup("ThemeSync", { clear = true })
 vim.api.nvim_create_autocmd("FocusGained", {
+  group = theme_group,
   pattern = "*",
   callback = sync_theme
 })
 
-vim.api.nvim_create_user_command(
-  'ColorschemeSync',
-  sync_theme,
-  {}
-)
+-- Create user commands
+local commands = {
+  ColorschemeSync = sync_theme,
+  ColorschemeToggle = theme_toggle,
+  ColorschemeReset = function() theme_toggle(); theme_toggle() end
+}
 
-vim.api.nvim_create_user_command(
-  'ColorschemeToggle',
-  theme_toggle,
-  {}
-)
+for name, func in pairs(commands) do
+  vim.api.nvim_create_user_command(name, func, {})
+end
 
-vim.api.nvim_create_user_command(
-  'ColorschemeReset',
-  function()
-    theme_toggle(); theme_toggle()
-  end,
-  {}
-)
+-- Create keymaps in a single batch
+local keymaps = {
+  { "<leader>utt", ":ColorschemeToggle<cr>", desc = "Toggle Theme" },
+  { "<leader>utr", ":ColorschemeReset<cr>", desc = "Reset Theme" },
+  { "<leader>uts", ":ColorschemeSync<cr>", desc = "Sync Theme" }
+}
 
-vim.keymap.set("n", "<leader>utt", ":colorschemeToggle<cr>", { desc = "Toggle Theme" })
-vim.keymap.set("n", "<leader>utr", ":colorschemeReset<cr>", { desc = "Reset Theme" })
-vim.keymap.set("n", "<leader>uts", ":colorschemeSync<cr>", { desc = "Sync Theme" })
+for _, map in ipairs(keymaps) do
+  vim.keymap.set("n", map[1], map[2], { desc = map.desc })
+end
